@@ -5,7 +5,7 @@
   <ol> 
     <li><a href="#run">Built with</a></li>
     <li><a href="#run">How to run app locally</a></li>  
-     <li><a href="#run">API doc</a></li>  
+     <li><a href="#api-doc">API doc</a></li>  
       <li><a href="#run">Postman results</a></li>  
   </ol>
 </details>
@@ -42,6 +42,15 @@ Discover some packages of this project:
 * [cors](https://www.npmjs.com/package/cors)
 * [classnames](https://www.npmjs.com/package/classnames)
 * [emotion/react](https://www.npmjs.com/package/@emotion/react) etc.
+
+## To run app in your local environment:
+### `#1`
+Move main.go to **$GOPATH/src/http-practice/main.go** and building should work just fine
+
+### `#2`
+For debug or run operation:
+##### `cd server/ && go get && go run main.go`
+
 ## api-doc
 
 1.

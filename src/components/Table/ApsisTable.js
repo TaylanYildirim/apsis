@@ -89,7 +89,7 @@ const ApsisTable = () => {
 
     useEffect(async () => {
         const domain = process.env.NODE_ENV === 'production' ?
-            'http://apsis-code.herokuapp.com/' :
+            'https://apsis-code.herokuapp.com/' :
             `http://127.0.0.1:10000/`;
         const baseURL = `${domain}employees`;
         let response = await axios.get(baseURL)
@@ -105,7 +105,7 @@ const ApsisTable = () => {
 
     useEffect(async () => {
         const domain = process.env.NODE_ENV === 'production' ?
-            'http://apsis-code.herokuapp.com/' :
+            'https://apsis-code.herokuapp.com/' :
             `http://127.0.0.1:10000/`;
         const baseURL = `${domain}employees`
         let response = await axios.get(baseURL)
@@ -141,20 +141,20 @@ const ApsisTable = () => {
 
     const onClickDelete = useCallback((rowData) => {
         const domain = process.env.NODE_ENV === 'production' ?
-            'http://apsis-code.herokuapp.com/' :
+            'https://apsis-code.herokuapp.com/' :
             `http://127.0.0.1:10000/`;
         const {EmployeeID, TeamID} = rowData;
         const baseURL = `${domain}teams/${TeamID}/employees/${EmployeeID}`;
         let response = axios.delete(baseURL)
             .then((response) => {
-                showSuccessPopup().then();
+                showSuccessPopup("deleted").then()
+                setScore(score + 1)
+                setScore(score - 1)
             })
             .catch((err) => {
-                showFailPopup().then();
+                showFailPopup("deleted").then();
                 console.error(err)
             })
-        setScore(score + 1)
-        setScore(score - 1)
     })
 
 
@@ -169,17 +169,17 @@ const ApsisTable = () => {
 
     const handleAddEmployee = async () => {
         const domain = process.env.NODE_ENV === 'production' ?
-            'http://apsis-code.herokuapp.com/' :
+            'https://apsis-code.herokuapp.com/' :
             `http://127.0.0.1:10000/`;
         const newEmployee = {score: score, teamScore: teamScore, teamID: teamID};
         if (isEdit) {
             const baseURL = `${domain}employees/${employeeID}`
             let response = await axios.put(baseURL, newEmployee)
                 .then((response) => {
-                    showSuccessPopup();
+                    showSuccessPopup("edited");
                 })
                 .catch((err) => {
-                    showFailPopup();
+                    showFailPopup("edited");
                     console.error(err);
                 })
 
@@ -187,10 +187,10 @@ const ApsisTable = () => {
             const baseURL = `${domain}teams/${teamID}/employee`
             let response = await axios.post(baseURL, newEmployee)
                 .then((response) => {
-                    showSuccessPopup();
+                    showSuccessPopup("added");
                 })
                 .catch((err) => {
-                    showFailPopup();
+                    showFailPopup("added");
                     console.error(err);
                 })
         }
@@ -338,16 +338,16 @@ const deleteIcon = () => (
     </Tooltip>
 )
 
-const showSuccessPopup = () => swal({
+const showSuccessPopup = (message) => swal({
     title: "Operation success!",
-    text: "Successfully registered!",
+    text: `Successfully ${message}!`,
     icon: "success",
     timer: "1200",
 });
 
-const showFailPopup = () => swal({
+const showFailPopup = (message) => swal({
     title: "Operation failed!",
-    text: "Couldn't be deleted",
+    text: `Couldn't be ${message}`,
     icon: "error",
     timer: "1200",
 });

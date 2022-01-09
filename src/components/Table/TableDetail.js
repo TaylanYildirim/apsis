@@ -66,7 +66,7 @@ const TableDetail = () => {
                     aria-label="full width tabs example"
                 >
                     <Tab label="Teams" {...a11yProps(0)} />
-                    <Tab label="USERS" {...a11yProps(1)} />
+                    <Tab label="Feedback" {...a11yProps(1)} />
                 </Tabs>
             </AppBar>
             <SwipeableViews

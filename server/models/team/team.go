@@ -47,6 +47,10 @@ func (t *Team) Delete(index int) {
 	if len(t.Employees) <= index {
 		return
 	}
+	if len(t.Employees) == 1 {
+		t.Employees = t.Employees[:0]
+		return
+	}
 
 	for i := len(t.Employees) - 1; i >= 0; i-- {
 		if index == i {
@@ -54,7 +58,7 @@ func (t *Team) Delete(index int) {
 				t.Employees[i+1:]...)
 		}
 	}
-	// 0 1 2 3
+
 	for i := index; i <= len(t.Employees)-1; i++ {
 		t.Employees[i].Id -= 1
 	}

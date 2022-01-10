@@ -33,6 +33,10 @@ func (t *Teams) GetLength() int {
 }
 
 func (t *Teams) Delete(i int) {
+	if len(t.Teams) == 1 {
+		t.Teams = t.Teams[:0]
+		return
+	}
 	t.Teams = append(t.Teams[:i], t.Teams[i+1:]...)
 }
 

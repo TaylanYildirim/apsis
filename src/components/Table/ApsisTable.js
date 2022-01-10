@@ -38,6 +38,7 @@ import AddIcon from "@mui/icons-material/Add";
 import {Slider} from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import {string} from "prop-types";
 
 const ApsisTable = () => {
     const [blocks, setBlocks] = useState([]);
@@ -48,6 +49,7 @@ const ApsisTable = () => {
     const [teamID, setTeamID] = useState(0);
     const [teamScore, setTeamScore] = useState(0);
     const [score, setScore] = useState(0);
+    const [teamIdTextFieldErr, setTeamIdTextFieldErr] = useState(false);
     let timeout;
 
     const tableIcons = {
@@ -119,6 +121,7 @@ const ApsisTable = () => {
             })
     }, [score]);
 
+
     const onClickAdd = async (rowData) => {
         setOpen(true)
         const {EmployeeID, Score, TeamID, TeamScore} = rowData;
@@ -139,24 +142,23 @@ const ApsisTable = () => {
         setTeamScore(TeamScore);
     }
 
-    const onClickDelete = useCallback((rowData) => {
+    const onClickDelete = async (rowData) => {
         const domain = process.env.NODE_ENV === 'production' ?
             'https://apsis-code.herokuapp.com/' :
             `http://127.0.0.1:10000/`;
         const {EmployeeID, TeamID} = rowData;
         const baseURL = `${domain}teams/${TeamID}/employees/${EmployeeID}`;
-        let response = axios.delete(baseURL)
+        let response = await axios.delete(baseURL)
             .then((response) => {
-                showSuccessPopup("deleted").then()
-                setScore(score + 1)
-                setScore(score - 1)
+                showSuccessPopup("deleted")
             })
             .catch((err) => {
                 showFailPopup("deleted").then();
-                console.error(err)
+                setFetchErr(true);
             })
-    })
-
+        setScore(score + 1)
+        setScore(score - 1)
+    };
 
     const handleClickOpen = () => {
         setIsEdit(false);
@@ -217,14 +219,20 @@ const ApsisTable = () => {
                         </DialogContentText>
                         <TextField
                             autoFocus
+                            type="number"
                             margin="dense"
                             id="teamID"
                             label="Team Id"
-                            type="email"
                             fullWidth
                             variant="standard"
                             value={teamID}
-                            onChange={(e) => setTeamID(e.target.value)}
+                            onChange={(e) =>{
+                                isNaN(e.target.value) || Number(e.target.value) > 20 ? setTeamIdTextFieldErr(true)
+                                    : setTeamIdTextFieldErr(false) ;
+                                setTeamID(e.target.value);
+                            }}
+                            error={teamIdTextFieldErr}
+                            helperText={teamIdTextFieldErr ? "Please enter less than 20 ": ""}
                             required={true}
                             disabled={isEdit}
                         />

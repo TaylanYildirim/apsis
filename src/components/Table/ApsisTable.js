@@ -207,6 +207,14 @@ const ApsisTable = () => {
             setScore(e.target.value);
         }, 400);
     }
+    const handleTeamIdTextFieldChange = (e) => {
+        isNaN(e.target.value) || Number(e.target.value) > 20 || Number(e.target.value) < 0 ? setTeamIdTextFieldErr(true)
+            : setTeamIdTextFieldErr(false);
+        if (Number.isInteger(e.target.value) && e.target.value > 0) {
+            setTeamID(e.target.value);
+            setTeamIdTextFieldErr(false);
+        }
+    }
 
     return (
         <Grid container justifyContent="center">
@@ -226,13 +234,9 @@ const ApsisTable = () => {
                             fullWidth
                             variant="standard"
                             value={teamID}
-                            onChange={(e) =>{
-                                isNaN(e.target.value) || Number(e.target.value) > 20 ? setTeamIdTextFieldErr(true)
-                                    : setTeamIdTextFieldErr(false) ;
-                                setTeamID(e.target.value);
-                            }}
+                            onChange={handleTeamIdTextFieldChange}
                             error={teamIdTextFieldErr}
-                            helperText={teamIdTextFieldErr ? "Please enter less than 20 ": ""}
+                            helperText={teamIdTextFieldErr ? "Please enter less than 20 and positive" : ""}
                             required={true}
                             disabled={isEdit}
                         />
@@ -258,7 +262,7 @@ const ApsisTable = () => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleAddEmployee}>Add</Button>
+                        <Button disabled={te} onClick={handleAddEmployee}>Add</Button>
                     </DialogActions>
                 </Dialog>
             </div>

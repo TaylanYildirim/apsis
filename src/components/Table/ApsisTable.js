@@ -78,7 +78,27 @@ const ApsisTable = () => {
         {title: 'Score', field: 'Score'},
         {title: 'Team Score', field: 'TeamScore'},
     ]
+    const tableOptions = () => (
+        {
+            headerStyle: {
+                backgroundColor: '#1876d2',
+                color: '#ffffff',
+                fontWeight: 'bold',
+            },
 
+            pageSize: 10,
+            pageSizeOptions: [10, 20, 30],
+            exportButton: {csv: true, pdf: true},
+            exportCsv: (columns, data) => handleExportCsv(columns, data),
+            loadingType: 'linear',
+            actionsColumnIndex: -1,
+            minBodyHeight: 200,
+            maxBodyHeight: 600,
+            toolbar: true,
+            paging: true,
+            search: true,
+        }
+    )
     const handleExportCsv = (allColumns, allData) => {
         const columns = allColumns.filter(columnDef => columnDef["export"] !== false);
         const exportedData = allData.map(rowData => columns.map(columnDef => rowData[columnDef.field]));
@@ -208,12 +228,10 @@ const ApsisTable = () => {
         }, 400);
     }
     const handleTeamIdTextFieldChange = (e) => {
-        isNaN(e.target.value) || Number(e.target.value) > 20 || Number(e.target.value) < 0 ? setTeamIdTextFieldErr(true)
-            : setTeamIdTextFieldErr(false);
-        if (Number.isInteger(e.target.value) && e.target.value > 0) {
-            setTeamID(e.target.value);
-            setTeamIdTextFieldErr(false);
-        }
+        Number(e.target.value) >= 0 && Number(e.target.value) <= 20 ?
+            setTeamIdTextFieldErr(false) :
+            setTeamIdTextFieldErr(true);
+        setTeamID(e.target.value);
     }
 
     return (
@@ -262,7 +280,7 @@ const ApsisTable = () => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
-                        <Button disabled={te} onClick={handleAddEmployee}>Add</Button>
+                        <Button disabled={teamIdTextFieldErr} onClick={handleAddEmployee}>Add</Button>
                     </DialogActions>
                 </Dialog>
             </div>

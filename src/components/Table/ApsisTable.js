@@ -99,13 +99,25 @@ const ApsisTable = () => {
             search: true,
         }
     )
+    function split(array, n) {
+        let [...arr]  = array;
+        var res = [];
+        while (arr.length) {
+            res.push(arr.splice(0, n));
+        }
+        return res;
+    }
     const handleExportCsv = (allColumns, allData) => {
+        let arr = [], resultArr=[];
         const columns = allColumns.filter(columnDef => columnDef["export"] !== false);
-        const exportedData = allData.map(rowData => columns.map(columnDef => rowData[columnDef.field]));
+        for (let i in allData) {
+           arr.push(...allData[i].data.map(rowData => columns.map(columnDef => rowData[columnDef.field])));
+        }
+
         new _filefy.CsvBuilder('teams_' + moment().format('YYYY-MM-DDTHH_mm') + '.csv')
             .setDelimeter(';')
             .setColumns(columns.map(columnDef => columnDef.title))
-            .addRows(exportedData)
+            .addRows(arr)
             .exportFile();
     }
 
@@ -333,7 +345,7 @@ const ApsisTable = () => {
 
                                 pageSize: 10,
                                 pageSizeOptions: [10, 20, 30],
-                                exportButton: {csv: true, pdf: true},
+                                exportButton: {csv: true, pdf: false},
                                 exportCsv: (columns, data) => handleExportCsv(columns, data),
                                 loadingType: 'linear',
                                 actionsColumnIndex: -1,

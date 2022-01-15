@@ -6,9 +6,9 @@ type Employee struct {
 }
 
 func (e *Employee) Get() int {
-	return (*e).Counter
+	return e.Counter
 }
 
 func (e *Employee) Set(counter int) {
-	(*e).Counter = counter
+	e.Counter = counter
 }

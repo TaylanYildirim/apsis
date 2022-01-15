@@ -26,7 +26,17 @@ func GetTeamScore(teamsDB *teams.Teams) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 		teamScore := teamsDB.GetTeam(stringUtil.ParseUint(id)).GetTotalScore()
-		handlers.SetHTTPStatus(w, http.StatusOK, "OKa", teamScore)
+		handlers.SetHTTPStatus(w, http.StatusOK, "OK", teamScore)
+		return
+	}
+	return fn
+}
+
+func ListEmployeesScoresInTeam(teamsDB *teams.Teams) http.HandlerFunc {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		teamId := chi.URLParam(r, "id")
+		employeesScore := teamsDB.GetTeam(stringUtil.ParseUint(teamId)).ListEmployeesScoreInTeam()
+		handlers.SetHTTPResponse(w, http.StatusOK, employeesScore)
 		return
 	}
 	return fn
@@ -46,7 +56,7 @@ func UpdateTeamScore(teamsDB *teams.Teams) http.HandlerFunc {
 		}
 		id := chi.URLParam(r, "id")
 		teamScore := teamsDB.GetTeam(stringUtil.ParseUint(id)).UpdateTeamScore(body.Score)
-		handlers.SetHTTPStatus(w, http.StatusOK, "OKw", teamScore)
+		handlers.SetHTTPStatus(w, http.StatusOK, "OK", teamScore)
 		return
 	}
 	return fn
@@ -65,7 +75,7 @@ func DeleteTeam(teamsDB *teams.Teams) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 		teamsDB.Delete(stringUtil.ParseUint(id))
-		handlers.SetHTTPStatus(w, http.StatusOK, "OfK", stringUtil.ParseUint(id))
+		handlers.SetHTTPStatus(w, http.StatusOK, "Ok", stringUtil.ParseUint(id))
 		return
 	}
 	return fn

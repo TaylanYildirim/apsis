@@ -31,6 +31,7 @@ func routers() *chi.Mux {
 	router.Post("/team", teamHandler.CreateNewTeam(teamsDB))
 	router.Put("/team/{id}", teamHandler.UpdateTeamScore(teamsDB))
 	router.Get("/team/{id}", teamHandler.GetTeamScore(teamsDB))
+	router.Get("/team/{id}/employees", teamHandler.ListEmployeesScoresInTeam(teamsDB))
 	router.Get("/teams", teamHandler.ListAllTeamsScores(teamsDB))
 	router.Delete("/team/{id}", teamHandler.DeleteTeam(teamsDB))
 	router.Post("/teams/{id}/employee", employeeHandler.CreateNewEmployee(teamsDB))
@@ -41,15 +42,14 @@ func routers() *chi.Mux {
 
 }
 func main() {
-    routers()
-    port := os.Getenv("PORT")
-    defaultPort := "10000"
+	routers()
+	port := os.Getenv("PORT")
+	defaultPort := "10000"
 
-    if !(port == "") {
-        log.Fatal(http.ListenAndServe(":"+port, router))
-    } else {
-        log.Fatal(http.ListenAndServe(":"+defaultPort, router))
-    }
-
+	if !(port == "") {
+		log.Fatal(http.ListenAndServe(":"+port, router))
+	} else {
+		log.Printf("Starting up on http://localhost:%s", defaultPort)
+		log.Fatal(http.ListenAndServe(":"+defaultPort, router))
+	}
 }
-

@@ -257,6 +257,7 @@ const ApsisTable = () => {
                         </DialogContentText>
                         <TextField
                             autoFocus
+                            defaultValue="0"
                             type="number"
                             margin="dense"
                             id="teamID"
@@ -296,14 +297,7 @@ const ApsisTable = () => {
                     </DialogActions>
                 </Dialog>
             </div>
-            <Grid item xs={11} style={{
-                display: 'table-cell',
-                width: '100%',
-                height: '100%',
-                verticalAlign: 'middle',
-                textAlign: 'center',
-                minHeight: '50px'
-            }}>
+            <Grid item xs={11} style={{display: 'table-cell', width: '100%', height: '100%', verticalAlign: 'middle', textAlign: 'center', minHeight: '50px'}}>
                 {fetchErr ?
                     <Stack sx={{width: '100%'}} spacing={2}>
                         <Alert severity="error">Sorry, error occurred during fetching API!</Alert>
@@ -315,7 +309,7 @@ const ApsisTable = () => {
                         <MaterialTable
                             title="TEAMS"
                             columns={columns}
-                            data={blocks}
+                            data={blocks== null ?[] : blocks}
                             actions={[
                                 {
                                     icon: () => <Fab color="primary" style={{backgroundColor: '#1876d2'}}

@@ -17,6 +17,22 @@ func (t *Team) GetTotalScore() (total int) {
 	return
 }
 
+func (t *Team) ListEmployeesScoreInTeam() *[]map[string]int {
+	var res []map[string]int
+	for _, employee := range t.Employees {
+		res = append(res, map[string]int{"EmployeeID": employee.Id, "Score": employee.Counter})
+	}
+	return &res
+}
+
+func (t *Team) GetAllScores() (total int) {
+	total = 0
+	for _, employee := range t.Employees {
+		total += employee.Counter
+	}
+	return
+}
+
 func (t *Team) Get(employeeId int) *employee.Employee {
 	return &t.Employees[employeeId]
 }
@@ -44,11 +60,11 @@ func (t *Team) UpdateTeamScore(newScore int) int {
 }
 
 func (t *Team) Delete(index int) {
-	if len(t.Employees) <= index {
-		return
-	}
 	if len(t.Employees) == 1 {
 		t.Employees = t.Employees[:0]
+		return
+	}
+	if len(t.Employees) <= index {
 		return
 	}
 
@@ -62,6 +78,7 @@ func (t *Team) Delete(index int) {
 	for i := index; i <= len(t.Employees)-1; i++ {
 		t.Employees[i].Id -= 1
 	}
+	return
 }
 
 func (t *Team) GetCounter(employeeId int) int {

@@ -96,7 +96,7 @@ func TestEditEmployee(t *testing.T) {
 }
 
 func TestListAllEmployees(t *testing.T) {
-	req := httptest.NewRequest(http.MethodPut, "/employees", nil)
+	req := httptest.NewRequest(http.MethodGet, "/employees", nil)
 
 	testTeams := teams.NewTeams()
 	testTeam1 := team.Team{

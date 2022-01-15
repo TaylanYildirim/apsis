@@ -43,13 +43,14 @@ Discover some packages of this project:
 * [classnames](https://www.npmjs.com/package/classnames)
 * [emotion/react](https://www.npmjs.com/package/@emotion/react) etc.
 
-## To run app in your local environment:
+## Local setup:
 ### `#1`
-Move main.go to **$GOPATH/src/http-practice/main.go** and building should work just fine
+Move main.go to **$GOPATH/src/apsis/server/main.go** and building should work just fine
 
 ### `#2`
 For debug or run operation:
-##### `cd server/ && go get && go run main.go`
+##### `git clone https://github.com/TaylanYildirim/apsis.git`
+##### `cd apsis/server/ && go get && go run main.go`
 
 ## api-doc
 
@@ -70,8 +71,8 @@ POST https://apsis-code.herokuapp.com/team
 
 ```http
 
-GET https://apsis-code.herokuapp.com/team/{id}
-e.g. https://apsis-code.herokuapp.com/team/0
+GET https://apsis-code.herokuapp.com/teams/{id}/employee
+e.g. https://apsis-code.herokuapp.com/teams/0/employee
 
 ```
 
@@ -84,6 +85,16 @@ e.g. https://apsis-code.herokuapp.com/team/0
 > As a User\
 > I want to get the current total steps taken by a team\
 > So that I can see how much that team have walked in total
+```http
+
+GET https://apsis-code.herokuapp.com/team/{id}
+e.g. https://apsis-code.herokuapp.com/team/0
+
+```
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `string` | **Required**. Team id |
 
 4.
 > As a User\
@@ -99,6 +110,15 @@ GET https://apsis-code.herokuapp.com/teams
 > As a User\
 > I want to list all counters in a team\
 > So that I can see how much each team member have walked
+```http
+
+GET https://apsis-code.herokuapp.com/team/{teamId}/employees
+e.g. https://apsis-code.herokuapp.com/team/0/employees
+
+```
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `string` | **Required**. Team id |
 
 6.
 > As a User\

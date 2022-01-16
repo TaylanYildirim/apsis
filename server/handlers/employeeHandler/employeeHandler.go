@@ -47,9 +47,9 @@ func DeleteEmployee(teamsDB *teams.Teams) http.HandlerFunc {
 		employeeId := stringUtil.ParseUint(chi.URLParam(r, "eID"))
 
 		teamsDB.GetTeam(teamId).Delete(employeeId)
-		for i, _ := range teamsDB.Teams {
-			if teamsDB.GetTeam(i).GetLength() == 0 {
-				teamsDB.Delete(i)
+		for _, team := range teamsDB.Teams {
+			if teamsDB.GetTeam(team.Id).GetLength() == 0 {
+				teamsDB.Delete(team.Id)
 			}
 		}
 		handlers.SetHTTPStatus(w, http.StatusOK, fmt.Sprintf("Employee id: %d deleted", employeeId), 200)

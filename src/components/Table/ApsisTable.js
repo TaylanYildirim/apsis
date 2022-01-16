@@ -78,40 +78,12 @@ const ApsisTable = () => {
         {title: 'Score', field: 'Score'},
         {title: 'Team Score', field: 'TeamScore'},
     ]
-    const tableOptions = () => (
-        {
-            headerStyle: {
-                backgroundColor: '#1876d2',
-                color: '#ffffff',
-                fontWeight: 'bold',
-            },
 
-            pageSize: 10,
-            pageSizeOptions: [10, 20, 30],
-            exportButton: {csv: true, pdf: true},
-            exportCsv: (columns, data) => handleExportCsv(columns, data),
-            loadingType: 'linear',
-            actionsColumnIndex: -1,
-            minBodyHeight: 200,
-            maxBodyHeight: 600,
-            toolbar: true,
-            paging: true,
-            search: true,
-        }
-    )
-    function split(array, n) {
-        let [...arr]  = array;
-        var res = [];
-        while (arr.length) {
-            res.push(arr.splice(0, n));
-        }
-        return res;
-    }
     const handleExportCsv = (allColumns, allData) => {
-        let arr = [], resultArr=[];
+        let arr = [];
         const columns = allColumns.filter(columnDef => columnDef["export"] !== false);
         for (let i in allData) {
-           arr.push(...allData[i].data.map(rowData => columns.map(columnDef => rowData[columnDef.field])));
+            arr.push(...allData[i].data.map(rowData => columns.map(columnDef => rowData[columnDef.field])));
         }
 
         new _filefy.CsvBuilder('teams_' + moment().format('YYYY-MM-DDTHH_mm') + '.csv')
@@ -297,7 +269,14 @@ const ApsisTable = () => {
                     </DialogActions>
                 </Dialog>
             </div>
-            <Grid item xs={11} style={{display: 'table-cell', width: '100%', height: '100%', verticalAlign: 'middle', textAlign: 'center', minHeight: '50px'}}>
+            <Grid item xs={11} style={{
+                display: 'table-cell',
+                width: '100%',
+                height: '100%',
+                verticalAlign: 'middle',
+                textAlign: 'center',
+                minHeight: '50px'
+            }}>
                 {fetchErr ?
                     <Stack sx={{width: '100%'}} spacing={2}>
                         <Alert severity="error">Sorry, error occurred during fetching API!</Alert>
@@ -309,7 +288,7 @@ const ApsisTable = () => {
                         <MaterialTable
                             title="TEAMS"
                             columns={columns}
-                            data={blocks== null ?[] : blocks}
+                            data={blocks == null ? [] : blocks}
                             actions={[
                                 {
                                     icon: () => <Fab color="primary" style={{backgroundColor: '#1876d2'}}
